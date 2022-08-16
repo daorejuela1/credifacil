@@ -1,0 +1,40 @@
+        <header class="masthead bg-primary text-white text-center">
+            <div class="container d-flex align-items-center flex-column">
+                <!-- Masthead Heading-->
+                <h1 class="masthead-heading text-uppercase mb-0">Simulador de credito - Colombia</h1>
+                <!-- Icon Divider-->
+                <div class="divider-custom divider-light">
+                    <div class="divider-custom-line"></div>
+                    <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                    <div class="divider-custom-line"></div>
+                </div>
+                <!-- Masthead Subheading-->
+                <p class="masthead-subheading font-weight-light mb-0">Esta página ayuda a visualizar los pagos de un crédito y te sugiere como ahorrar en intereses</p>
+            </div>
+        </header>
+        <section class="page-section" id="contact">
+            <div class="container">
+                <h1 class="masthead-heading text-uppercase mb-0 text-center">Datos del crédito:</h1>
+                <!-- Contact Section Heading-->
+                <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0"></h2>
+                <!-- Icon Divider-->
+                <div class="divider-custom">
+                    <div class="divider-custom-line"></div>
+                    <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                    <div class="divider-custom-line"></div>
+                </div>
+                <!-- Contact Section Form-->
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 col-xl-7">
+        <%= turbo_frame_tag "credit_form" do %>
+            <%= render 'credits/form', credit: @credit %>
+        <% end %>
+                </div>
+        </section>
+
+
+Tabla de creditos:
+<%= turbo_stream_from "credits" %>
+<%= turbo_frame_tag "credits" do %>
+    <%= render @credits %>
+<% end %>

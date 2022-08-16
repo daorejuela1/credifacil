@@ -1,0 +1,37 @@
+<%= form_with(model: credit, id: dom_id(credit)) do |form| %>
+  <% if credit.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(credit.errors.count, "error") %> prohibited this credit from being saved:</h2>
+
+      <ul>
+        <% credit.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+    <div class="form-group">
+        <%= form.label :payment_type, "Tipo de pago:" %> <br/>
+        <%= form.select :payment_type, [["Cuota fija", "fixed_quota"], ["Cuota variable", "variable_quota"]], {},{ :class => 'form-select' } %>
+    </div>
+    <div class="form-group">
+        <%= form.label :credit_value, "Valor del crédito:" %>
+        <%= form.number_field :credit_value, placeholder: "4'100.000 $", class: "form-control", required: true %>
+    </div>
+    <div class="form-group">
+        <%= form.label :installment_number, "Numero de cuotas" %>
+        <%= form.number_field :installment_number, in: 1..100, step: 1, value: 24, class: "form-control", required: true %>
+    </div>
+    <div class="form-group">
+        <%= form.label :interest_type, "Tipo de interés: " %>
+        <div class="form-check">
+            <%= form.radio_button :interest_type, 'anual_cash', checked: true %> <%= form.label :interest_type, "Efectivo anual", value: 'anual_cash' %>
+            <%= form.radio_button :interest_type, 'monthly_cash'  %> <%= form.label :interest_type, "Efectivo mensual", value: 'monthly_cash' %>
+        </div>
+    <div class="form-group">
+        <%= form.label :interest_rate, "Porcentaje de interés" %>
+        <%= form.number_field :interest_rate, in: 1..100, class: "form-control", required: true %>
+    </div>
+  <%= form.submit "Ver plan de pagos", class: "btn btn-primary btn-l mt-1 center" %>
+<% end %>
