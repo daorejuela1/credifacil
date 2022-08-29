@@ -31,8 +31,9 @@
         <% end %>
                 </div>
         </section>
+
     Tabla de creditos:
     <%= turbo_stream_from "credits" %>
     <%= turbo_frame_tag "credits" do %>
-        <%= render @credit_table if @credit_table.present? %>
+        <%= render @credits %>
     <% end %>

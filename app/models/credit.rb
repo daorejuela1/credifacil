@@ -1,5 +1,12 @@
 class Credit < ApplicationRecord
-    after_create_commit { broadcast_append_to "credits" }
-    after_update_commit { broadcast_replace_to "credits" }
-    after_destroy_commit { broadcast_remove_to "credits" }
+
+    # def broadcast_append_or_update_to_credit()
+    #     if self.new_record?
+    #         broadcast_append_to "credits"
+    #     else
+    #         broadcast_update_to "credits"
+    #     end
+    # end
+
+    belongs_to :user
 end

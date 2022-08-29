@@ -3,8 +3,8 @@ class CreditsController < ApplicationController
 
   # GET /credits or /credits.json
   def index
-    @credit = Credit.new
-    @credits = Credit.all
+    @credit = Credit.new(user: guest_user)
+    @credit_table = Credit.find_by_user_id(guest_user.id)
   end
 
   # GET /credits/1 or /credits/1.json
@@ -22,9 +22,12 @@ class CreditsController < ApplicationController
 
   # POST /credits or /credits.json
   def create
-    @credit = Credit.new(credit_params)
-    respond_to do |format|
+    @credit = Credit.find_by_user_id(guest_user.id)
+    if @credit.nil?
+      @credit = guest_user.create_credit(credit_params)
+      respond_to do |format|
       if @credit.save
+        format.turbo_stream { render turbo_stream: turbo_stream.append('credits', partial: 'credit', locals: { credit: @credit }) }
         format.html { redirect_to credits_url, notice: 'Calculo realizado con éxito.' }
         format.json { render :show, status: :created, location: @credit }
       else
@@ -33,15 +36,20 @@ class CreditsController < ApplicationController
         format.json { render json: @credit.errors, status: :unprocessable_entity }
       end
     end
+    else
+      update
+    end
   end
 
   # PATCH/PUT /credits/1 or /credits/1.json
   def update
     respond_to do |format|
       if @credit.update(credit_params)
-        format.html { redirect_to credit_url(@credit), notice: "Credit was successfully updated." }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace('credits', partial: 'credit', locals: { credit: @credit }) }
+        format.html { redirect_to credits_url, notice: 'Calculo realizado con éxito.' }
         format.json { render :show, status: :ok, location: @credit }
       else
+        format.turbo_stream { render turbo_stream: turbo_stream.replace(@credit, partial: 'credit/form', locals: { credit: @credit}) }
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @credit.errors, status: :unprocessable_entity }
       end
